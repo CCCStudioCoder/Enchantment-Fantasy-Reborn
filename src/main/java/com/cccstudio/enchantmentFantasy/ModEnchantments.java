@@ -2,6 +2,7 @@ package com.cccstudio.enchantmentFantasy;
 
 import com.cccstudio.enchantmentFantasy.enchantment.InvisibilityEnchantment;
 import com.cccstudio.enchantmentFantasy.enchantment.PoisonEnchantment;
+import com.cccstudio.enchantmentFantasy.enchantment.StiflingEnchantment;
 import com.cccstudio.enchantmentFantasy.enchantment.WealthEnchantment;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -23,6 +24,7 @@ public class ModEnchantments {
     public static final ResourceKey<Enchantment> WEALTH = key("wealth");
     public static final ResourceKey<Enchantment> WEALTH_OF_NETHER = key("wealth_of_nether");
     public static final ResourceKey<Enchantment> STIFLING = key("stifling");
+    public static final ResourceKey<Enchantment> STUNNING_HIT = key("stunning_hit");
 
     public static void bootstrap(BootstrapContext<Enchantment> context) {
         //var enchantments = context.lookup(Registries.ENCHANTMENT);
@@ -88,8 +90,17 @@ public class ModEnchantments {
                 Enchantment.dynamicCost(30, 0),
                 3,
                 EquipmentSlotGroup.MAINHAND
-        )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new com.cccstudio.enchantmentFantasy.enchantment.StiflingEnchantment(
-        )));
+        )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new StiflingEnchantment()));
+
+        register(context, STUNNING_HIT, Enchantment.enchantment(Enchantment.definition(
+                weapons,
+                10,
+                1,
+                Enchantment.dynamicCost(20, 0),
+                Enchantment.dynamicCost(30, 0),
+                3,
+                EquipmentSlotGroup.MAINHAND
+        )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new StiflingEnchantment()));
     }
 
     private static ResourceKey<Enchantment> key(String name) {

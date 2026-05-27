@@ -25,7 +25,7 @@ public class EnchantmentFantasy {
 
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENTS = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, MODID);
 
-    public EnchantmentFantasy(IEventBus modEventBus, ModContainer modContainer) {
+    public EnchantmentFantasy(IEventBus modEventBus, ModContainer ignored) {
         EnchantmentEffects.REGISTER.register(modEventBus);
         ATTACHMENTS.register(modEventBus);
 

@@ -20,7 +20,10 @@ public record InvisibilityEnchantment() implements EnchantmentEntityEffect {
             living.addEffect(new MobEffectInstance(
                     MobEffects.INVISIBILITY,
                     i * 60,
-                    1
+                    1,
+                    false,
+                    false,
+                    false
             ));
         }
     }

@@ -1,8 +1,6 @@
 package com.cccstudio.enchantmentFantasy;
 
-import com.cccstudio.enchantmentFantasy.enchantment.InvisibilityEnchantment;
-import com.cccstudio.enchantmentFantasy.enchantment.PoisonEnchantment;
-import com.cccstudio.enchantmentFantasy.enchantment.WealthEnchantment;
+import com.cccstudio.enchantmentFantasy.enchantment.*;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
@@ -26,6 +24,9 @@ public class EnchantmentEffects {
             REGISTER.register("wealth", () -> WealthEnchantment.CODEC);
 
     public static final Supplier<MapCodec<? extends EnchantmentEntityEffect>> STIFLING =
-            REGISTER.register("stifling", () -> com.cccstudio.enchantmentFantasy.enchantment.StiflingEnchantment.CODEC);
+            REGISTER.register("stifling", () -> StiflingEnchantment.CODEC);
+
+    public static final Supplier<MapCodec<? extends EnchantmentEntityEffect>> STUNNING_HIT =
+            REGISTER.register("stunning_hit", () -> StunningHitEnchantment.CODEC);
 
 }
