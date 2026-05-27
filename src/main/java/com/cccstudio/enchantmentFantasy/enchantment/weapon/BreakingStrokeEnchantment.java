@@ -1,21 +1,26 @@
-package com.cccstudio.enchantmentFantasy.enchantment;
+package com.cccstudio.enchantmentFantasy.enchantment.weapon;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 
-public record StiflingEnchantment() implements EnchantmentEntityEffect {
+public record BreakingStrokeEnchantment() implements EnchantmentEntityEffect {
 
-    public static final MapCodec<StiflingEnchantment> CODEC = MapCodec.unit(StiflingEnchantment::new);
+    public static final MapCodec<BreakingStrokeEnchantment> CODEC = MapCodec.unit(BreakingStrokeEnchantment::new);
 
     @Override
     public void apply(ServerLevel serverLevel, int i, EnchantedItemInUse enchantedItemInUse, Entity entity, Vec3 vec3) {
         if(entity instanceof LivingEntity living) {
-            living.setAirSupply(0);
+            for(ItemStack armorPiece : living.getArmorSlots()) {
+                if(!armorPiece.isEmpty()) {
+                    armorPiece.setDamageValue(armorPiece.getDamageValue() + i);
+                }
+            }
         }
     }
 

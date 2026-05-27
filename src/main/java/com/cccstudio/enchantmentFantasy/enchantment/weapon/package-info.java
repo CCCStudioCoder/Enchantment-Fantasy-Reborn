@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.cccstudio.enchantmentFantasy.enchantment;
+package com.cccstudio.enchantmentFantasy.enchantment.weapon;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

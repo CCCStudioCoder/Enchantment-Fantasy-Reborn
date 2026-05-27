@@ -1,4 +1,4 @@
-package com.cccstudio.enchantmentFantasy.enchantment;
+package com.cccstudio.enchantmentFantasy.enchantment.weapon;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

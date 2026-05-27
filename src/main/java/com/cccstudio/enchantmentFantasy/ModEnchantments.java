@@ -1,9 +1,6 @@
 package com.cccstudio.enchantmentFantasy;
 
-import com.cccstudio.enchantmentFantasy.enchantment.InvisibilityEnchantment;
-import com.cccstudio.enchantmentFantasy.enchantment.PoisonEnchantment;
-import com.cccstudio.enchantmentFantasy.enchantment.StiflingEnchantment;
-import com.cccstudio.enchantmentFantasy.enchantment.WealthEnchantment;
+import com.cccstudio.enchantmentFantasy.enchantment.weapon.*;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -25,6 +22,9 @@ public class ModEnchantments {
     public static final ResourceKey<Enchantment> WEALTH_OF_NETHER = key("wealth_of_nether");
     public static final ResourceKey<Enchantment> STIFLING = key("stifling");
     public static final ResourceKey<Enchantment> STUNNING_HIT = key("stunning_hit");
+    public static final ResourceKey<Enchantment> GALVANIZING = key("shield_bash");
+    public static final ResourceKey<Enchantment> DISTURBANCE = key("disturbance");
+    public static final ResourceKey<Enchantment> BREAKING_STROKE = key("breaking_stroke");
 
     public static void bootstrap(BootstrapContext<Enchantment> context) {
         //var enchantments = context.lookup(Registries.ENCHANTMENT);
@@ -101,6 +101,36 @@ public class ModEnchantments {
                 3,
                 EquipmentSlotGroup.MAINHAND
         )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new StiflingEnchantment()));
+
+        register(context, GALVANIZING, Enchantment.enchantment(Enchantment.definition(
+                weapons,
+                10,
+                1,
+                Enchantment.dynamicCost(20, 0),
+                Enchantment.dynamicCost(30, 0),
+                3,
+                EquipmentSlotGroup.MAINHAND
+        )));
+
+        register(context, DISTURBANCE, Enchantment.enchantment(Enchantment.definition(
+                weapons,
+                10,
+                2,
+                Enchantment.dynamicCost(15, 8),
+                Enchantment.dynamicCost(20, 10),
+                3,
+                EquipmentSlotGroup.MAINHAND
+        )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new DisturbanceEnchantment()));
+
+        register(context, BREAKING_STROKE, Enchantment.enchantment(Enchantment.definition(
+                weapons,
+                10,
+                1,
+                Enchantment.dynamicCost(20, 0),
+                Enchantment.dynamicCost(30, 0),
+                3,
+                EquipmentSlotGroup.MAINHAND
+        )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new BreakingStrokeEnchantment()));
     }
 
     private static ResourceKey<Enchantment> key(String name) {

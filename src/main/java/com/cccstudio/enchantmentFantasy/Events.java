@@ -1,14 +1,17 @@
 package com.cccstudio.enchantmentFantasy;
 
-import com.cccstudio.enchantmentFantasy.enchantment.PoisonEnchantment;
-import com.cccstudio.enchantmentFantasy.enchantment.StunningHitEnchantment;
+import com.cccstudio.enchantmentFantasy.enchantment.weapon.PoisonEnchantment;
+import com.cccstudio.enchantmentFantasy.enchantment.weapon.StunningHitEnchantment;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -16,6 +19,7 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @EventBusSubscriber
 public class Events {
@@ -31,7 +35,13 @@ public class Events {
         }
 
         // Life Thief effect
-        Holder<Enchantment> lifeThief = event.getEntity().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolder(ModEnchantments.LIFE_THIEF).orElseThrow();
+        Optional<Holder.Reference<Enchantment>> lifeThiefOptional = event.getEntity().registryAccess().registryOrThrow(Registries.ENCHANTMENT)
+                .getHolder(ModEnchantments.LIFE_THIEF);
+        if(lifeThiefOptional.isEmpty()) {
+            return;
+        }
+        Holder.Reference<Enchantment> lifeThief = lifeThiefOptional.get();
+
         int enchantLevel = 0;
         try {
             enchantLevel = Objects.requireNonNull(Objects.requireNonNull(event.getSource().getWeaponItem())
@@ -54,8 +64,46 @@ public class Events {
     }
 
     @SubscribeEvent
-    public static void livingTick(EntityTickEvent event) {
+    public static void livingTick(EntityTickEvent.Post event) {
+        if(!(event.getEntity() instanceof LivingEntity living)) {
+            return;
+        }
 
+        ItemStack stack = living.getMainHandItem();
+
+        if(stack.isEmpty()) {
+            return;
+        }
+
+        ItemEnchantments enchants =
+                stack.get(DataComponents.ENCHANTMENTS);
+
+        if(enchants == null) {
+            return;
+        }
+
+        Holder<Enchantment> galvanizing =
+                event.getEntity()
+                        .registryAccess()
+                        .registryOrThrow(Registries.ENCHANTMENT)
+                        .getHolder(ModEnchantments.GALVANIZING)
+                        .orElse(null);
+
+        if(galvanizing == null) {
+            return;
+        }
+
+        int level = enchants.getLevel(galvanizing);
+
+        if(level <= 0) {
+            return;
+        }
+
+        living.addEffect(new MobEffectInstance(
+                MobEffects.MOVEMENT_SPEED,
+                40,
+                level - 1
+        ));
     }
 
 }

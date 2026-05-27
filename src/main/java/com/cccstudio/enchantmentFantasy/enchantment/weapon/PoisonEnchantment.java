@@ -1,4 +1,4 @@
-package com.cccstudio.enchantmentFantasy.enchantment;
+package com.cccstudio.enchantmentFantasy.enchantment.weapon;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -27,7 +27,7 @@ public record PoisonEnchantment() implements EnchantmentEntityEffect {
             living.addEffect(
                     new MobEffectInstance(MobEffects.POISON,
                     (level - 1) * 3 + 2,
-                    (int) ((level - 1) * 0.5f + 1)));
+                    (int) ((level - 1) * 0.5f)));
             if(level == 4 && itemInUse.owner() instanceof ServerPlayer) {
                 living.setData(SUPER_POISON, (int)(serverLevel.getGameTime()));
             }
