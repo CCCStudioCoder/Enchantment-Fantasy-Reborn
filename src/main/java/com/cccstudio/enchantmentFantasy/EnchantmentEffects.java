@@ -17,9 +17,6 @@ public class EnchantmentEffects {
     public static final Supplier<MapCodec<? extends EnchantmentEntityEffect>> POISON =
             REGISTER.register("poison", () -> PoisonEnchantment.CODEC);
 
-    public static final Supplier<MapCodec<? extends EnchantmentEntityEffect>> INVISIBILITY =
-            REGISTER.register("invisibility", () -> InvisibilityEnchantment.CODEC);
-
     public static final Supplier<MapCodec<? extends EnchantmentEntityEffect>> WEALTH =
             REGISTER.register("wealth", () -> WealthEnchantment.CODEC);
 

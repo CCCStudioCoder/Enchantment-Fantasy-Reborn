@@ -5,6 +5,7 @@ import com.cccstudio.enchantmentFantasy.enchantment.weapon.StunningHitEnchantmen
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -23,6 +25,10 @@ import java.util.Optional;
 
 @EventBusSubscriber
 public class Events {
+
+    public static void sendDebugMessage(Level level, String message){
+        level.players().forEach(player -> player.sendSystemMessage(Component.literal(message)));
+    }
 
     @SubscribeEvent
     public static void onEntityHurt(LivingDamageEvent.Post event) {
@@ -56,12 +62,35 @@ public class Events {
 
     @SubscribeEvent
     public static void onEntityAttack(LivingIncomingDamageEvent event) {
-        if(event.getSource().getEntity() instanceof LivingEntity attacker) {
-            if(attacker.level().getGameTime() - attacker.getData(StunningHitEnchantment.UNABLE_ATTACK) < 20) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker) {
+            // Stunning Hit effect
+            if (attacker.level().getGameTime() - attacker.getData(StunningHitEnchantment.UNABLE_ATTACK) < 30) {
+                sendDebugMessage(attacker.level(), "Attack canceled due to Stunning Hit cooldown");
                 event.setCanceled(true);
+            }
+
+            // Invisibility effect
+            Optional<Holder.Reference<Enchantment>> invisibilityOptional =
+                    attacker.registryAccess()
+                            .registryOrThrow(Registries.ENCHANTMENT)
+                            .getHolder(ModEnchantments.INVISIBILITY);
+
+            if (invisibilityOptional.isEmpty()) return;
+            Holder.Reference<Enchantment> invisibility = invisibilityOptional.get();
+
+            ItemStack weapon = event.getSource().getWeaponItem();
+            if (weapon == null || weapon.isEmpty()) return;
+
+            ItemEnchantments enchants = weapon.getComponents().get(DataComponents.ENCHANTMENTS);
+            if (enchants == null) return;
+
+            int level = enchants.getLevel(invisibility);
+            if (level > 0) {
+                attacker.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 30 * level, Math.max(0, level - 1)));
             }
         }
     }
+
 
     @SubscribeEvent
     public static void livingTick(EntityTickEvent.Post event) {

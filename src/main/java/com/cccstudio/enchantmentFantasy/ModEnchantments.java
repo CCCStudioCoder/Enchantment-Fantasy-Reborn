@@ -22,7 +22,7 @@ public class ModEnchantments {
     public static final ResourceKey<Enchantment> WEALTH_OF_NETHER = key("wealth_of_nether");
     public static final ResourceKey<Enchantment> STIFLING = key("stifling");
     public static final ResourceKey<Enchantment> STUNNING_HIT = key("stunning_hit");
-    public static final ResourceKey<Enchantment> GALVANIZING = key("shield_bash");
+    public static final ResourceKey<Enchantment> GALVANIZING = key("galvanising");
     public static final ResourceKey<Enchantment> DISTURBANCE = key("disturbance");
     public static final ResourceKey<Enchantment> BREAKING_STROKE = key("breaking_stroke");
 
@@ -32,6 +32,7 @@ public class ModEnchantments {
         HolderSet.Named<Item> weapons = items.getOrThrow(ItemTags.WEAPON_ENCHANTABLE);
 
         register(context, POISON, Enchantment.enchantment(Enchantment.definition(
+                weapons,
                 weapons,
                 10,
                 4,
@@ -44,6 +45,7 @@ public class ModEnchantments {
 
         register(context, LIFE_THIEF, Enchantment.enchantment(Enchantment.definition(
                 weapons,
+                weapons,
                 10,
                 3,
                 Enchantment.dynamicCost(1, 5),
@@ -54,15 +56,17 @@ public class ModEnchantments {
 
         register(context, INVISIBILITY, Enchantment.enchantment(Enchantment.definition(
                 weapons,
+                weapons,
                 10,
                 2,
                 Enchantment.dynamicCost(10, 5),
                 Enchantment.dynamicCost(25, 5),
                 3,
                 EquipmentSlotGroup.MAINHAND
-        )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.VICTIM, EnchantmentTarget.ATTACKER, new InvisibilityEnchantment()));
+        )));
 
         register(context, WEALTH, Enchantment.enchantment(Enchantment.definition(
+                weapons,
                 weapons,
                 10,
                 1,
@@ -74,6 +78,7 @@ public class ModEnchantments {
 
         register(context, WEALTH_OF_NETHER, Enchantment.enchantment(Enchantment.definition(
                 weapons,
+                weapons,
                 10,
                 1,
                 Enchantment.dynamicCost(20, 0),
@@ -83,6 +88,7 @@ public class ModEnchantments {
         )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new WealthEnchantment(true)));
 
         register(context, STIFLING, Enchantment.enchantment(Enchantment.definition(
+                weapons,
                 weapons,
                 10,
                 1,
@@ -94,6 +100,7 @@ public class ModEnchantments {
 
         register(context, STUNNING_HIT, Enchantment.enchantment(Enchantment.definition(
                 weapons,
+                weapons,
                 10,
                 1,
                 Enchantment.dynamicCost(20, 0),
@@ -103,6 +110,7 @@ public class ModEnchantments {
         )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new StiflingEnchantment()));
 
         register(context, GALVANIZING, Enchantment.enchantment(Enchantment.definition(
+                weapons,
                 weapons,
                 10,
                 1,
@@ -114,6 +122,7 @@ public class ModEnchantments {
 
         register(context, DISTURBANCE, Enchantment.enchantment(Enchantment.definition(
                 weapons,
+                weapons,
                 10,
                 2,
                 Enchantment.dynamicCost(15, 8),
@@ -123,6 +132,7 @@ public class ModEnchantments {
         )).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new DisturbanceEnchantment()));
 
         register(context, BREAKING_STROKE, Enchantment.enchantment(Enchantment.definition(
+                weapons,
                 weapons,
                 10,
                 1,

@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
@@ -40,12 +41,15 @@ public record WealthEnchantment(boolean forNether) implements EnchantmentEntityE
 
     @Override
     public void apply(ServerLevel serverLevel, int i, EnchantedItemInUse enchantedItemInUse, Entity entity, Vec3 vec3) {
+        if(!serverLevel.dimension().equals(forNether ? Level.NETHER : Level.OVERWORLD)) return;
+
         RandomSource random = entity.getRandom();
         int randomInt = random.nextInt(200);
         if(randomInt < 50) {
             Block block = null;
             HashMap<Block, Integer> options = forNether ? NETHER_ORES : OVERWORLD_ORES;
             int cumulative = 0;
+
             for (Map.Entry<Block, Integer> entry : options.entrySet()) {
                 cumulative += entry.getValue();
                 if (randomInt < cumulative) {
@@ -53,6 +57,7 @@ public record WealthEnchantment(boolean forNether) implements EnchantmentEntityE
                     break;
                 }
             }
+
             ArrayList<BlockPos> availablePositions = new ArrayList<>();
             for(int x = 0; x < 20; x++) {
                 for(int y = 0; y < 20; y++) {
@@ -65,6 +70,7 @@ public record WealthEnchantment(boolean forNether) implements EnchantmentEntityE
                 }
             }
             assert block != null;
+
             BlockPos pos = availablePositions.get(random.nextInt(availablePositions.size()));
             serverLevel.setBlockAndUpdate(pos, block.defaultBlockState());
         }

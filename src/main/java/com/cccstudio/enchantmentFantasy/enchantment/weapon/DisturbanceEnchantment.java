@@ -17,7 +17,7 @@ public record DisturbanceEnchantment() implements EnchantmentEntityEffect {
     @Override
     public void apply(ServerLevel serverLevel, int i, EnchantedItemInUse enchantedItemInUse, Entity entity, Vec3 vec3) {
         RandomSource source = entity.getRandom();
-        if(entity instanceof Player player && source.nextInt(100) < 20 * i) {
+        if(entity instanceof Player player && source.nextInt(100) < 30 * i) {
             ItemStack mainHandItem = player.getMainHandItem();
             int slot = source.nextInt(40);
             ItemStack randomSlotItem = player.getInventory().getItem(slot);
